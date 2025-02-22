@@ -1,0 +1,16 @@
+---
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: Empty
+ColumnLimit: 100
+AlignConsecutiveMacros: AcrossComments
+AlignConsecutiveAssignments: None
+IndentCaseLabels: true
+PointerAlignment: Left
+SpacesBeforeTrailingComments: 2
+AlignTrailingComments: true
+IncludeBlocks: Regroup
+SortIncludes: CaseInsensitive
+AllowShortCaseLabelsOnASingleLine: true
