@@ -20,9 +20,6 @@ typedef struct {
     size_t tests_failed; /**< Number of failed tests */
 } TestSuite;
 
-/* Core test framework declarations */
-// extern TestSuite NAMEOF_TESTS;
-
 /**
  * @brief Initialize a new test suite
  *
@@ -39,7 +36,7 @@ typedef struct {
  * Initializes suite counters and dbg_printf()s header.
  */
 #define TEST_SUITE(suite)                                                                          \
-    dbg_printf()("\nRunning %s...\n", suite.name);                                                 \
+    dbg_printf("\nRunning %s...\n", suite.name);                                                   \
     suite.tests_run = 0;                                                                           \
     suite.tests_failed = 0;                                                                        \
     /* Prevents compiler warning; Compiler seems to lose track of usage across macro expansions */ \
@@ -49,19 +46,19 @@ typedef struct {
  * @brief Define an individual test case
  *
  * Creates a new test case within a suite.
- * @note Must be matched with END_TEST_CASE:
  *
+ * @note Must be matched with END_TEST_CASE:
  * ```c
- * TEST_CASE(NAMEOF_TESTS, "Square conversion") {
+ * TEST_CASE(NAMEOF_TESTS, "Test group descriptor") {
  *     ASSERT(NAMEOF_TESTS, condition);
  *     ASSERT(NAMEOF_TESTS, condition2);
- *     dbg_printf()_test_results(NAMEOF_TESTS);
+ *     print_test_results(NAMEOF_TESTS);
  * } END_TEST_CASE(NAMEOF_TESTS);
  * ```
  */
 #define TEST_CASE(suite, name)                                                                     \
     do {                                                                                           \
-        dbg_printf()("  %s: ", name);                                                              \
+        dbg_printf("  %s: ", name);                                                                \
         suite.tests_run++;                                                                         \
         test_counter++;                                                                            \
         bool test_failed = false;                                                                  \
@@ -71,9 +68,9 @@ typedef struct {
     }                                                                                              \
     if (test_failed) {                                                                             \
         suite.tests_failed++;                                                                      \
-        dbg_printf()("FAILED\n");                                                                  \
+        dbg_printf("FAILED\n");                                                                    \
     } else {                                                                                       \
-        dbg_printf()("passed\n");                                                                  \
+        dbg_printf("passed\n");                                                                    \
     }                                                                                              \
     }                                                                                              \
     while (0)
@@ -88,13 +85,13 @@ typedef struct {
     do {                                                                                           \
         if (!(condition)) {                                                                        \
             test_failed = true;                                                                    \
-            dbg_printf()("\n    Assertion failed: %s\n    File %s, Line %d\n", #condition,         \
-                         __FILE__, __LINE__);                                                      \
+            dbg_printf("\n    Assertion failed: %s\n    File %s, Line %d\n", #condition, __FILE__, \
+                       __LINE__);                                                                  \
         }                                                                                          \
     } while (0)
 
 /**
- * @brief dbg_printf() test suite results
+ * @brief Print test suite results
  * @param suite Suite to report on
  *
  * Outputs summary of tests run and failed.

@@ -6,12 +6,11 @@ COMPRESSED = YES
 OBJDIR = obj
 BINDIR = bin
 
-CFLAGS = -Wall -Wextra -Oz
-CXXFLAGS = -Wall -Wextra -Oz
+CFLAGS = -Wall -Wextra -Oz -Isrc
+CXXFLAGS = -Wall -Wextra -Oz -Isrc
 
-TEST_INCLUDES = -Itests -Itests/framework
-TEST_SOURCES = $(wildcard tests/framework/*.c) \
-               tests/test_main.c
+TEST_INCLUDES = -Itests/framework -Itests/unit
+TEST_SOURCES = $(filter-out src/main.c,$(wildcard src/*.c))
 
 .PHONY: all tests
 
@@ -20,9 +19,8 @@ all: $(BINDIR)/$(NAME).8xp
 tests: 
 	@echo "Building test version..."
 	$(MAKE) NAME=ChessTst \
-			DESCRIPTION="BytCHESS Tests" \
+			DESCRIPTION="Chess Project Unit Tests" \
 			COMPRESSED=YES \
-			LTO=NO \
 			DEBUGMODE=DEBUG \
 			SRCDIR=tests \
 			CFLAGS="$(CFLAGS) $(TEST_INCLUDES)" \
