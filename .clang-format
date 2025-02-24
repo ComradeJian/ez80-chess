@@ -14,3 +14,5 @@ AlignTrailingComments: true
 IncludeBlocks: Regroup
 SortIncludes: CaseInsensitive
 AllowShortCaseLabelsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: Never
+InsertBraces: true

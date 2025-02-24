@@ -157,41 +157,28 @@ typedef uint8_t piece_t;
 /** @} */
 
 // ==========================
-//         Macros
+//    Internal Macros
 // ==========================
 
 /**
- * @brief Square coordinate conversion macros
+ * @brief Internal macros for efficient board operations
  * @{
  */
 #define SQUARE_TO_FILE(square)          ((square) & BOARD_FILE_MASK)
 #define SQUARE_TO_RANK(square)          ((square) >> BOARD_RANK_SHIFT)
 #define FILE_RANK_TO_SQUARE(file, rank) (((rank) << BOARD_RANK_SHIFT) | (file))
-/** @} */
 
-/**
- * @brief Piece manipulation macros
- * @{
- */
 #define MAKE_PIECE(color, type)      ((color) | (type))
 #define GET_PIECE_TYPE(piece)        ((piece) & PIECE_MASK)
 #define IS_PIECE_TYPE(piece, type)   (GET_PIECE_TYPE(piece) == (type))
 #define GET_PIECE_COLOR(piece)       ((piece) & COLOR_MASK)
 #define IS_PIECE_COLOR(piece, color) (GET_PIECE_COLOR(piece) == (color))
-/** @} */
 
-/**
- * @brief Side/color conversion macros
- * @{
- */
 #define COLOR_TO_SIDE(color) ((color) == PIECE_WHITE ? SIDE_WHITE : SIDE_BLACK)
 #define SIDE_TO_COLOR(side)  ((side) == SIDE_WHITE ? PIECE_WHITE : PIECE_BLACK)
-/** @} */
 
-/**
- * @brief Square validation macro
- */
 #define INVALID_SQUARE(sq) ((sq) & 0x88)
+/** @} */
 
 // ==========================
 //         Data Types
@@ -253,6 +240,15 @@ void board_reset(board_t* board);
 // ========================
 
 /**
+ * @brief Check if a square is valid on the 0x88 board
+ * @param square Square to validate
+ * @return true if square is valid, false if not
+ */
+static inline bool is_valid_square(square_t square) {
+    return !INVALID_SQUARE(square);
+}
+
+/**
  * @brief Check if specific castling rights are available
  * @param board Board to query
  * @param rights Castling rights to check (can combine with bitwise OR)
@@ -268,13 +264,6 @@ void board_reset(board_t* board);
  * @endcode
  */
 bool board_has_castling_rights(const board_t* board, castling_rights_t rights);
-
-/**
- * @brief Check if a square is valid on the 0x88 board
- * @param square Square to validate
- * @return true if square is valid, false if not
- */
-bool is_valid_square(square_t square);
 
 /**
  * @brief Convert an ASCII piece character to internal piece representation
@@ -293,6 +282,38 @@ piece_t char_to_piece(char c);
  * @note Returns lowercase for black pieces, uppercase for white pieces.
  */
 char piece_to_char(piece_t piece);
+
+// ==========================
+//    Square Manipulation
+// ==========================
+
+/**
+ * @brief Convert file and rank to square index
+ * @param file File (0-7)
+ * @param rank Rank (0-7)
+ * @return square_t Square in 0x88 format
+ */
+static inline square_t square_from_file_rank(uint8_t file, uint8_t rank) {
+    return FILE_RANK_TO_SQUARE(file, rank);
+}
+
+/**
+ * @brief Get file number from square
+ * @param square Square in 0x88 format
+ * @return uint8_t File (0-7)
+ */
+static inline uint8_t square_to_file(square_t square) {
+    return SQUARE_TO_FILE(square);
+}
+
+/**
+ * @brief Get rank number from square
+ * @param square Square in 0x88 format
+ * @return uint8_t Rank (0-7)
+ */
+static inline uint8_t square_to_rank(square_t square) {
+    return SQUARE_TO_RANK(square);
+}
 
 // ========================
 //    Piece Manipulation
@@ -324,6 +345,52 @@ piece_t board_get_piece(const board_t* board, square_t square);
  * @return true if square is empty or invalid, false if occupied
  */
 bool board_is_empty(const board_t* board, square_t square);
+
+/**
+ * @brief Create a piece with specified color and type
+ * @param color Piece color
+ * @param type Piece type
+ * @return piece_t Combined piece representation
+ */
+static inline piece_t create_piece(piece_color_t color, piece_type_t type) {
+    return MAKE_PIECE(color, type);
+}
+
+/**
+ * @brief Get the type of a piece
+ * @param piece Piece to examine
+ * @return piece_type_t Type of the piece
+ */
+static inline piece_type_t get_piece_type(piece_t piece) {
+    return GET_PIECE_TYPE(piece);
+}
+
+/**
+ * @brief Get the color of a piece
+ * @param piece Piece to examine
+ * @return piece_color_t Color of the piece
+ */
+static inline piece_color_t get_piece_color(piece_t piece) {
+    return GET_PIECE_COLOR(piece);
+}
+
+/**
+ * @brief Convert piece color to side
+ * @param color Piece color to convert
+ * @return side_t Corresponding side
+ */
+static inline side_t color_to_side(piece_color_t color) {
+    return COLOR_TO_SIDE(color);
+}
+
+/**
+ * @brief Convert side to piece color
+ * @param side Side to convert
+ * @return piece_color_t Corresponding piece color
+ */
+static inline piece_color_t side_to_color(side_t side) {
+    return SIDE_TO_COLOR(side);
+}
 
 // ========================
 //      Board Display

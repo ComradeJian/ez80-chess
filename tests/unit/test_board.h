@@ -11,8 +11,7 @@
  * - Edge cases and error handling
  */
 
-#ifndef BOARD_TESTS_H
-#define BOARD_TESTS_H
+#pragma once
 
 #include "test_framework.h"
 
@@ -57,5 +56,3 @@ void run_fen_tests(void);
 #ifdef __cplusplus
 }
 #endif
-
-#endif  // BOARD_TESTS_H

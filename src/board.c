@@ -27,10 +27,6 @@ bool board_has_castling_rights(const board_t* board, castling_rights_t rights) {
     return (board->castling_rights & rights) == rights;
 }
 
-bool is_valid_square(square_t square) {
-    return !INVALID_SQUARE(square);
-}
-
 piece_t char_to_piece(char c) {
     piece_color_t color = islower(c) ? PIECE_BLACK : PIECE_WHITE;
     c = tolower(c);
