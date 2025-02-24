@@ -6,8 +6,8 @@ COMPRESSED = YES
 OBJDIR = obj
 BINDIR = bin
 
-CFLAGS = -Wall -Wextra -Oz -Isrc
-CXXFLAGS = -Wall -Wextra -Oz -Isrc
+CFLAGS = -Wall -Wextra -O3 -Isrc
+CXXFLAGS = -Wall -Wextra -O3 -Isrc
 
 TEST_INCLUDES = -Itests/framework -Itests/unit
 TEST_SOURCES = $(filter-out src/main.c,$(wildcard src/*.c))

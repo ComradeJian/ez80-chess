@@ -186,7 +186,7 @@ static inline move_t make_capture_promotion(square_t from, square_t to, piece_ty
 static inline move_t make_special(square_t from, square_t to, special_move_t special) {
     move_t move = make_move(from, to) | ((move_t)special << MOVE_SPECIAL_SHIFT);
 
-    // En passant is always a pawn capture
+    /* En passant is always a pawn capture */
     if (special == SPECIAL_EN_PASSANT) {
         move |= ((move_t)PIECE_PAWN << MOVE_CAPTURE_SHIFT) |
                 ((move_t)PRIORITY_CAPTURE << MOVE_PRIORITY_SHIFT);
